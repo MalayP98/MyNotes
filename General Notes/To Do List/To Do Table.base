@@ -1,0 +1,20 @@
+views:
+  - type: table
+    name: Table
+    filters:
+      and:
+        - file.inFolder("General Notes/To Do List/To Do Items")
+    order:
+      - Name
+      - file.name
+      - Link
+      - Status
+      - Tag
+    sort:
+      - property: Status
+        direction: ASC
+    columnSize:
+      note.Name: 423
+      file.name: 186
+      note.Link: 221
+      note.Status: 87
