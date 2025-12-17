@@ -155,7 +155,7 @@
   Correct network representation: `192.168.12.0/22`
 - Explanation:   `192.168.15.129/22` -> `...|..|00001111.10000001`, subnet is `...|...|11111100|00000000` so all bits starting from 23<sup>rd</sup> should be 0 in the network. Which gives us `192.168.12.0`. <img src="resource/Example10.jpg" width=500 height=200 />
 #### Dividing a network in subnets
-We can divide a larger network in smaller subnets. For example, `192.168.15.0/24` can be divided into **8** subnet by using `/27` <img src="Example11.jpg" width=700 height=900/>
+We can divide a larger network in smaller subnets. For example, `192.168.15.0/24` can be divided into **8** subnet by using `/27` <img src="resource/Example11.jpg" width=700 height=900/>
 
 ### CIDR - Classless Inter-Domain Routing
 - ==Replaced old Class based IP division==
