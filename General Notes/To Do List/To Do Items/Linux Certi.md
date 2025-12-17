@@ -4,4 +4,5 @@ Link: https://vonage-qa.udemy.com/course/unofficial-linux-redhat-certified-syste
 Status: Planned
 Tag: OS
 Content Type: Video
+Notes:
 ---

@@ -10,11 +10,13 @@ views:
       - Link
       - Status
       - Tag
+      - Notes
     sort:
       - property: Status
         direction: ASC
     columnSize:
-      note.Name: 423
+      note.Name: 333
       file.name: 186
-      note.Link: 221
+      note.Link: 164
       note.Status: 87
+      note.Tag: 103

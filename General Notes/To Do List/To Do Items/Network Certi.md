@@ -4,4 +4,5 @@ Link: https://vonage-qa.udemy.com/course/ccna-complete/learn/lecture/9538164#ove
 Status: In Progress
 Tag: Networks
 Content Type: Video
+Notes: "[[Network]]"
 ---

@@ -4,5 +4,6 @@ Link: https://vonage-qa.udemy.com/course/aws-certified-solutions-architect-assoc
 Status: In Progress
 Tag: Devops
 Content Type: Video
+Notes: "[[AWS Certified Solutions Architect Slides v45-3.pdf]]"
 ---
 
