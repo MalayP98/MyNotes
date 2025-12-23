@@ -1,4 +1,3 @@
-
 ##### 1.
 ---
 **Link**: https://overthewire.org/wargames/bandit/bandit6.html
