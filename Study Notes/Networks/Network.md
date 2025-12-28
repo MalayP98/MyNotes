@@ -1,6 +1,3 @@
-# [Computer Networks](https://vonage-qa.udemy.com/course/ccna-complete/learn/lecture/9538164#overview)
-
----------------------
 
 * PDU : Protocol Data Units, block of data shared between different layers of OSI or TCP/IP models.
 * Here is what its called at each layer,
@@ -98,7 +95,9 @@
     * IP is set manually on servers, routers and other network devices. For devices like PC and laptop the IP is
       automatically assigned using DHCP.
 
-  ## Class A IPs:
+  ## IP Classes
+  
+  ### Class A IPs:
 
     * Used where large number of host are needed.
     * Subnet of 8.
@@ -107,28 +106,28 @@
     * 0 cannot be start of a IP and 127 is reserved for local, so now the address ranges reduces to (1-126)
     * 127.0.0.1 - 127.255.255.255 are all reserved for loopback testing (local).
 
-  ## Class B IPs :
+  ### Class B IPs :
 
     * Used for mid to large size networks
     * First 2 bits are 10.
     * Subnet 16
     * Range 128.0.0.0 - 191.255.0.0
 
-  ## Class C IPs :
+  ### Class C IPs :
 
     * Used for small size networks.
     * Starting bits are 110.
     * Subnet 24
     * Range 192.0.0.0 - 223.255.255.0
 
-  ## Class D IPs :
+  ### Class D IPs :
 
     * Reserved for multicast address.
     * First 4 bits are 1110
     * These address are not allocated to host and there is no subnet mask
     * Range 224.0.0.0 - 239.255.255.255
 
-  ## Class E IPs :
+  ### Class E IPs :
 
     * First 4 bits are 1111.
     * Kept for experimental and future use.
@@ -191,3 +190,69 @@ VLSM let us subnet the IPs flexibly as we don't need to divide the IPs equally.
 25 -> `192.168.15.192/27`
 
 ==*In VLSM wastage is lesser compared to FLSM*==.
+
+
+### Private Address
+- Addresses which are not connected/reachable by the internet.
+- Secure and cheap.
+
+<table>
+    <tr>
+      <th>Class</th>
+      <th>IP range</th>
+    </tr>
+    <tr>
+      <th>A</th>
+      <th>10.0.0.0/8</th>
+    </tr>
+    <tr>
+      <th>B</th>
+      <th>172.16.0.0/12</th>
+    </tr>
+    <tr>
+      <th>C</th>
+      <th>192.168.0.0/16</th>
+    </tr>
+  </table>
+
+- As private IPs are not connect to the internet 2 host in different private network can have same private IPs.
+
+### IPv6
+- IPv4 has small range, so we ran out of address.
+- IPv6 is 128 bit where as IPv4 is 32 bits. 
+
+### Network Address Translation
+Lets multiple private IPs to access internet using a single public IP. Example, If company is having 200 private IPs/hosts and if these hosts want to access internet they will require 200 public IPs to do so without NAT, with NAT they can use a single public IP.
+*This saves cost*.
+
+##### How does NAT solves the problem of limited IPv4 IPs?
+As mentioned above for 200 private IPs, if they all want to connect to the internet, we will require 200 public IPs. But with NAT will might only required 1 public IP.
+
+
+## Data Link Layer (2)
+Encode-Decode frames to bits. Ethernet is used here.
+<img src="resource/Example12.png" width=700 height=200/>
+
+1. Preamble: Help sender and user to synchronise
+2. Des/Src Address: Is usually MAC address when using Etherner
+3. Ethertype - Usually IPv4
+4. FCS: Frame Check Sequence, used to check nothing is corrupted
+
+### Mac Address
+MAC stands for *Multimedia Access Control*. ==Hexdecimal==. It is a 48-bit long address. First 24-bits are provided by the manufacture *(OUI - Organisationally Unique Identifier)* and the next 24-bit is vendor specific. Globally unique. Example, `00:50:56:C0:00:08`
+
+
+## Physical Layer (1)
+Transfers stream of bits via *Electric signals, Light Signals etc*
+### Type of Ethernet Cables
+3 types of ethernet cables
+
+#### Coaxial Cable
+Old and obsolete technology. Single copper wire.
+
+#### Twisted Pair Copper Cable
+Most commonly used. As the wires are twisted it prevent electro-magnetic interference.
+
+#### Fiber Optic Ethernet
+Uses ==light instead of electrical signals==.  Immune to electromagnetic interference. Used in ==data centers & ISPs==.
+
