@@ -153,6 +153,10 @@
   Incorrect network representation: `192.168.15.129/22`
   Correct network representation: `192.168.12.0/22`
 - Explanation:   `192.168.15.129/22` -> `...|..|00001111.10000001`, subnet is `...|...|11111100|00000000` so all bits starting from 23<sup>rd</sup> should be 0 in the network. Which gives us `192.168.12.0`. <img src="resource/Example10.jpg" width=500 height=200 />
+- 2 IPs are in same subnet if there network address is same. Example,  
+  IP 1: `10.10.10.10/24`
+  IP 2: `10.10.10.11/24`
+  Both the IPs have network address of `10.10.10.0` so they belong to same subnet.
 #### Dividing a network in subnets
 We can divide a larger network in smaller subnets. For example, `192.168.15.0/24` can be divided into **8** subnet by using `/27` <img src="resource/Example11.jpg" width=700 height=900/>
 
@@ -256,3 +260,51 @@ Most commonly used. As the wires are twisted it prevent electro-magnetic interfe
 #### Fiber Optic Ethernet
 Uses ==light instead of electrical signals==.  Immune to electromagnetic interference. Used in ==data centers & ISPs==.
 
+
+## Devices
+1. **Collision Domain**: Network segment where all device share same communication medium. *TL; DR only one device can transfer data at a time, can cause of this collision might occur.*
+2. **Half-Duplex**: All port have one collision domain, so only one host can transmit data at a time.
+3. **Full-Duplex**: One collision domain per port so all the host can send and receive data at same time.
+
+### Hubs
+Helps host attached to it communicate. Operate on Half-Duplex. Hubs operate on *Layer 1* so they are not aware of MAC address, as a result when a frame is received it is flooded to all port except the one it received on. Hampers performance as all the host have to process them.
+
+### Switch
+Helps host attached to it communicate. Similar to Hubs. Can operate on Half or Full Duplex.
+Usually operate on Full-Duplex. Operate on *Layer 1 and 2* so it is MAC address aware. When a frame is received switch checks for the MAC address and sends it just to the port it is supposed to go to. ==If a frame is received for broadcast or for a unknown destination it is flooded to all the ports==.
+Check [[11-03 Switch Operation.pdf]] first slide.
+When host with MAC address `1.1.1` wants to send frames to host with MAC address `2.2.2` it first sends it to switch. Switch sees that this MAC address is coming to port 1 of the switch and stores it into the table.
+<table>
+    <tr>
+      <th>MAC</th>
+      <th>Port</th>
+    </tr>
+    <tr>
+      <th>1.1.1</th>
+      <th>1</th>
+    </tr>
+  </table>
+Switch sees that destination MAC `2.2.2` is *not* present in this table, it an unknown MAC so it broadcasts it to all the host except the one it came from. Host with MAC `2.2.2` processes this confirm as that it's MAC is equal to the destination MAC and send a reply and will hit switch on port 2, switch will store this.
+<table>
+    <tr>
+      <th>MAC</th>
+      <th>Port</th>
+    </tr>
+    <tr>
+      <th>1.1.1</th>
+      <th>1</th>
+    </tr>
+    <tr>
+      <th>2.2.2</th>
+      <th>2</th>
+    </tr>
+  </table>
+
+### Router
+Route traffic from one network to another. Work on Layer 3 so they are IP aware. Example,
+<img src="resource/Example13.jpg" width=700 height=400/>
+<img src="resource/Example14.jpg" width=700 height=700/>
+
+>When data travels over the Internet, routers use the **destination IP address** to forward packets from one network to another until the destination network is reached. Once the packet reaches the destination local network, the **switch uses the destination MAC address** to deliver the frame to the correct host within that network.
+
+## Life of a Packet

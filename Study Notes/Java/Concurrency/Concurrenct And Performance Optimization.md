@@ -249,7 +249,8 @@ sync void usePrinter(String str){...}
 2. Thread should be holding at least one resource and waiting to acquire another resource, called *Hold & Wait*
 3. A cannot be taken forcefully from any thread, called *No Preemption*.
 4. A cycle of threads exist where each thread wait for a resource locked by next thread, called *Cyclic Wait*
-###### Deadlock Solution
+
+###### Deadlock Solutions
 1. If shared resources to be locked are less we should try to maintain same order in which the locks are acquired.
    **Thread 1**
 ```java
@@ -270,4 +271,57 @@ release(A);
 ```
 Here we are acquiring lock on resource `A` first. *Thread-1* will acquire lock on `A`, when *Thread-2* tries to acquire lock on `A` it wont be able to and *Thread-1* will also acquire lock on `B` thus avoiding deadlock.
 
-2. 
+2. Watchdog, thread interruption, tryLock (Check online)
+
+## Advanced Locking
+### ReentrantLock
+It is similar to `synchronize` keyword. The only complication is that this lock needs to be unlocked/released manually. Example, 
+```java
+Lock lock = new ReentrantLock();
+
+void foo(){
+	lock.lock();
+	bar(); // critical section
+	lock.unlock() // manual unlock
+}
+```
+In case of an exception we wont be able to unlock, so unlock should be done in a finally block.
+```java
+Lock lock = new ReentrantLock();
+
+void foo(){
+	lock.lock();
+	try{
+		bar(); // critical section
+	}
+	finally{
+		lock.unlock() // unlocking inside finally so as to release the lock even in case of an exception.
+	}
+}
+```
+
+We get some extra methods with this lock,
+1. `lockInterruptibly()` -> method allows a thread to wait until it is interrupted. This can avoid deadlocks. Example,
+```java
+void foo(){
+	lock.lockInterruptibly();
+	// logic
+}
+
+Thread t1 = new Thread(() -> foo());
+t1.start();
+t1.interrupt(); // the thread will stop waiting (if waiting) and release the lock.
+```
+
+2. `tryLock()/tryLock(timeout, unit)` -> method will try to acquire the lock, if the lock is already acquired by any other thread this method returns `false`  if not *then it will acquire the lock + return `true`*. 
+	1. `tryLock()` -> **non-blocking**
+	2. `tryLock(timeout, unit)` -> **blocking for specified time**
+
+**Imp:**
+Reentrant lock also provided fairness.
+If there are plenty of threads in line to acquire a lock and certain thread somehow is acquiring the lock everytime the other threads will starve. This is unfair. 
+With Reentrant lock we set fairness to `true`, `Lock lock = new ReentrantLock(true)` this will makes sure every thread gets a chance to acquire the lock.
+The threads will execute in order, first come first serve basis, this will reduce the throughput of the application, read more [[Response 1]].
+
+### ReentrantReadWriteLock
+Provides 2 locks. Read lock allows multiple threads and write only allows single thread at a time. If atleast one thread has acquired read lock another thread cannot acquire write lock. If a thread have acquired write lock no thread can acquire read lock.
