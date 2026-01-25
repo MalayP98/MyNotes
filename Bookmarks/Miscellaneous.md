@@ -28,3 +28,19 @@ image: https://i.ytimg.com/vi/yaqpVGekrro/maxresdefault.jpg
 ```
 
 ---
+
+
+##### 3.
+---
+**Link**: https://www.reddit.com/r/Piracy/wiki/index/
+**Description**: <span style="color: #03a9fc"> Links to pirated content </span>
+**Date**: *Thursday 15th January 2026*
+
+```cardlink
+url: https://www.reddit.com/r/Piracy/wiki/index/
+title: "Reddit - The heart of the internet"
+host: www.reddit.com
+```
+
+---
+

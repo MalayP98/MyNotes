@@ -104,7 +104,7 @@
        Don't but until and unless it break bullish engulfing's high (may even have to wait for 10-15 days)
        <img src="resource/Example8.png" width="400" height="300"/>
        Target in this case will be upcoming CVSH and stoploss is when price breaks support/low of bullish
-       *(***Which ever is low***)* engulfing or goes below it.
+       ==*(Which ever is low)*== engulfing or goes below it.
        If bullish engulfing's low breaks, that means it is a fake engulfing and we should not buy even if in coming days
        the price cross engulfing's high
        <img src="resource/Example9.png" width="400" height="300"/>

@@ -325,3 +325,7 @@ The threads will execute in order, first come first serve basis, this will reduc
 
 ### ReentrantReadWriteLock
 Provides 2 locks. Read lock allows multiple threads and write only allows single thread at a time. If atleast one thread has acquired read lock another thread cannot acquire write lock. If a thread have acquired write lock no thread can acquire read lock.
+
+
+## Inter Thread Communication
+
