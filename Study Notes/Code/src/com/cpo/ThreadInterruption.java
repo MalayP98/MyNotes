@@ -1,6 +1,7 @@
 package Code.src.com.cpo;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 
 public class ThreadInterruption {
 
@@ -66,6 +67,6 @@ public class ThreadInterruption {
         t2 = new Thread(new LongRunningTask(new BigInteger("200"), 100000));
         t2.setDaemon(true);
         t2.start();
-//        t2.interrupt();
+        t2.interrupt();
     }
 }
