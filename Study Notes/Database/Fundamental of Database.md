@@ -164,10 +164,13 @@ Means that a txn can read uncommitted changes from other txn. This the weakest i
 Means that a txn can read committed changes from other txn. Prevents *dirty reads* as they happen because of reading uncommitted changes.
 
 #### Repeatable Reads
-Makes sure that if a txn reads a row it will see that same row throughout its txn *even if other txn modify that data*. This possible by taking snapshot. Prevents dirty and non-repeatable reads. May also prevent phantom reads but that depends on the database. [[Response 2]]
+Makes sure that if a txn reads a row it will see that same row throughout its txn *even if other txn modify that data*. This possible by taking snapshot. Prevents dirty and non-repeatable reads. 
+May also prevent phantom reads but that depends on the database. [[Response 2]]
+Row level.
 
 #### Serializable
 It make concurrent txn behave as synchronised. It prevents all the read phenomenon. It is achieved by either heavy locking or using snapshots with conflict detection.
+Full isoloation
 Cons: 
 1. Low concurrency(Blocking)
 2. Deadlocks
@@ -200,3 +203,59 @@ These constrains/rules can be any of,
 - Triggers
 - Application-level invariants
 - Business rules
+
+|Account|Balance|
+|---|---|
+|A|1000|
+|B|500|
+
+Business rule:
+
+- Total money must remain same.
+- No negative balance.
+
+Transaction:
+
+```sql
+BEGIN;  UPDATE accounts SET balance = balance - 200 WHERE id = 'A'; UPDATE accounts SET balance = balance + 200 WHERE id = 'B';  COMMIT;
+```
+
+After commit:
+
+| Account | Balance |
+| ------- | ------- |
+| A       | 800     |
+| B       | 700     |
+
+Total = 1500 (same as before)
+
+**If crash happens midway**
+Suppose:
+- Money deducted from A
+- Crash happens before adding to B
+
+Now:
+
+| Account | Balance |
+| ------- | ------- |
+| A       | 800     |
+| B       | 500     |
+
+Total = 1300 ❌
+
+That violates business rule.
+Refer [[Response 3]] for more examples on Consistency
+
+
+## Durability
+Ensures that if the transaction is committed the data is not lost in any case (server crash, power outage, OS crash)
+
+Database ensures Durability using *Write Ahead Log* (WAL).
+
+### WAL
+Changes are written to a log in the disk before they are applied to actual data pages. 
+The transaction writes data to memory(RAM), at the time of commit changes are pushed to log file. Data pages maybe written later.
+
+Problem with WAL is that when DB asks OS to write data/changes to log file the OS stores the data/changes to OS cache and returns that the data has been saved successfully. If at this point OS crashes the changes wont be written to log file.
+
+To prevent this DB uses *fsync* method which writes the data/changes directly to the file and is thus responsible for *slower commits*.
