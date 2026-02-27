@@ -1,9 +1,8 @@
-							
+
 * PDU : Protocol Data Units, block of data shared between different layers of OSI or TCP/IP models.
 * Here is what its called at each layer,
 
-<img src="resource/Example1.png" width="600" height="300"/>
-
+<img src="resource/images/Example1.png" width="600" height="300"/>
 - Upper OSI Layer:
     1. Includes -> Application, Presentation, Session.
     2. Application layer is the app itself, the UI that we see. HTTP/S is a app layer protocol.
@@ -50,11 +49,11 @@
             - Performs flow control.
         * TCP 3-way handshake:
 
-        <img src="resource/Example3.png" width="700" height="300"/>
+        <img src="resource/images/Example3.png" width="700" height="300"/>
 
         * TCP headers:
 
-        <img src="resource/Example4.png" width="700" height="400"/>
+        <img src="resource/images/Example4.png" width="700" height="400"/>
 
         * UDP:
             - It is not connection oriented(does not performs handshake).
@@ -65,7 +64,7 @@
 
         * UDP Header:
 
-        <img src="resource/Example5.png" width="700" height="300"/>
+        <img src="resource/images/Example5.png" width="700" height="300"/>
 
         * Real time traffic uses UDP.
         * DNS uses TCP and UDP.
@@ -77,7 +76,7 @@
     * Protocol on this layer : IP, ICMP, IPSec.
     * IP Header :
 
-    <img src="resource/Example6.png" width="700" height="400"/>
+    <img src="resource/images/Example6.png" width="700" height="400"/>
 
     * Types of traffic :
         * Unicast : One-to-One communication. If multiple request comes then multiple copies of same will have to
@@ -146,19 +145,19 @@
 - Subnet is always a series of `1`s followed by a series on `0`s.
 - This `1` portion defines *Network section* and the `0` portion defines *Host portion*.
 - We represent a subnet with `/<NUMBER OF 1s>` notation. Example, `192.168.15.20/21` means first 22 bits on this network are one and rest are zero.
-- Example: `192.168.15.138/24` <img src="resource/Example9.jpg" width=700 height=750 />
+- Example: `192.168.15.138/24` <img src="resource/images/Example9.jpg" width=700 height=750 />
 
 - Correct way to represent a network is to make all its host bits zero. 
   Example, 
   Incorrect network representation: `192.168.15.129/22`
   Correct network representation: `192.168.12.0/22`
-- Explanation:   `192.168.15.129/22` -> `...|..|00001111.10000001`, subnet is `...|...|11111100|00000000` so all bits starting from 23<sup>rd</sup> should be 0 in the network. Which gives us `192.168.12.0`. <img src="resource/Example10.jpg" width=500 height=200 />
+- Explanation:   `192.168.15.129/22` -> `...|..|00001111.10000001`, subnet is `...|...|11111100|00000000` so all bits starting from 23<sup>rd</sup> should be 0 in the network. Which gives us `192.168.12.0`. <img src="resource/images/Example10.jpg" width=500 height=200 />
 - 2 IPs are in same subnet if there network address is same. Example,  
   IP 1: `10.10.10.10/24`
   IP 2: `10.10.10.11/24`
   Both the IPs have network address of `10.10.10.0` so they belong to same subnet.
 #### Dividing a network in subnets
-We can divide a larger network in smaller subnets. For example, `192.168.15.0/24` can be divided into **8** subnet by using `/27` <img src="resource/Example11.jpg" width=700 height=900/>
+We can divide a larger network in smaller subnets. For example, `192.168.15.0/24` can be divided into **8** subnet by using `/27` <img src="resource/images/Example11.jpg" width=700 height=900/>
 
 ### CIDR - Classless Inter-Domain Routing
 - ==Replaced old Class based IP division==
@@ -235,7 +234,7 @@ As mentioned above for 200 private IPs, if they all want to connect to the inter
 
 ## Data Link Layer (2)
 Encode-Decode frames to bits. Ethernet is used here.
-<img src="resource/Example12.png" width=700 height=200/>
+<img src="resource/images/Example12.png" width=700 height=200/>
 
 1. Preamble: Help sender and user to synchronise
 2. Des/Src Address: Is usually MAC address when using Etherner
@@ -302,8 +301,8 @@ Switch sees that destination MAC `2.2.2` is *not* present in this table, it an u
 
 ### Router
 Route traffic from one network to another. Work on Layer 3 so they are IP aware. Example,
-<img src="resource/Example13.jpg" width=700 height=400/>
-<img src="resource/Example14.jpg" width=700 height=700/>
+<img src="resource/images/Example13.jpg" width=700 height=400/>
+<img src="resource/images/Example14.jpg" width=700 height=700/>
 
 >When data travels over the Internet, routers use the **destination IP address** to forward packets from one network to another until the destination network is reached. Once the packet reaches the destination local network, the **switch uses the destination MAC address** to deliver the frame to the correct host within that network.
 

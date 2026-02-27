@@ -16,7 +16,7 @@
 
 * A vector clock is a [server, version] pair associated with a data item. It can be used to check
   if one version precedes, succeeds, or in conflict with others. Example *D[(S<sub>i</sub>, V<sub>j</sub>), ....]*
-* ![Example1.png](resource/Example1.png)
+* ![Example1.png](Study%20Notes/System%20Design/SystemDesignInterview/resource/Example1.png)
 * X is ancestor of Y if each participant in the vector clock of Y is greater than or equal to in X. Example,
   *D([s0, 1], [s1, 1])] is an ancestor of D([s0, 1], [s1, 2])*
 * X is sibling of Y if there is any participant in Y's vector clock who has a counter that is less than its
@@ -74,7 +74,7 @@
   number of the database servers.
 * Example,
 
-![Example2.png](resource/Example2.png)
+![Example2.png](Study%20Notes/System%20Design/SystemDesignInterview/resource/Example2.png)
 
 * Problems,
     1. Does not scales well when servers are added or removed.
@@ -93,7 +93,7 @@
 * Multiple server calls one database and get ID using it's auto increment feature.
 * Example,
 
-![Example3.png](resource/Example3.png)
+![Example3.png](Study%20Notes/System%20Design/SystemDesignInterview/resource/Example3.png)
 
 * Cons, single point of failure.
 
@@ -102,7 +102,7 @@
 * Divides the unique ID into bit sections,
 * Example,
 
-![Example4.png](resource/Example4.png)
+![Example4.png](Study%20Notes/System%20Design/SystemDesignInterview/resource/Example4.png)
 
 * Sections,
     1. Sign bit : Always 0, for future use.
@@ -127,7 +127,7 @@
 5. Assume average URL length is 100.
 6. Storage requirement over 10 years: 365 billion * 100 bytes * 10 years = 365 TB
 
-![Example5.png](resource/Example5.png)
+![Example5.png](Study%20Notes/System%20Design/SystemDesignInterview/resource/Example5.png)
 
 ### 301 v/s 302 redirecting
 
@@ -143,7 +143,7 @@ either the response status is 301 or 302.
 
 * Form : &lt;HOST&gt;/{URL_HASH}
 
-![Example6.png](resource/Example6.png)
+![Example6.png](Study%20Notes/System%20Design/SystemDesignInterview/resource/Example6.png)
 
 * The hash function must satisfy the following requirements:
     1. Each longURL must be hashed to one hashValue.
@@ -275,7 +275,7 @@ either the response status is 301 or 302.
 * Apps gather contact info when a user signs up for the first time.
 * Contact info includes, phone number, email, device token.
 
-![Example12.png](resource/Example12.png)
+![Example12.png](Study%20Notes/System%20Design/SystemDesignInterview/resource/Example12.png)
 
 ### Notification sending/receiving flow:
 

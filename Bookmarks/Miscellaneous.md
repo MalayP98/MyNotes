@@ -44,3 +44,19 @@ host: www.reddit.com
 
 ---
 
+
+##### 4.
+---
+**Link**: https://hurawatchz.to/movie?page=4
+**Description**: <span style="color: #03a9fc"> Pirated Movies </span>
+**Date**: *Friday 27th February 2026*
+
+```cardlink
+url: https://hurawatchz.to/movie?page=4
+title: "Hurawatch - Watch HD Movies Online"
+description: "Watch best movies full HD online for free. Over 25000 free streaming movies, documentaries and TV shows."
+host: hurawatchz.to
+image: https://f.woowoowoowoo.net/xxrz/1300x700/100/1b/63/1b634adbb694e396654038805163e73a/1b634adbb694e396654038805163e73a.jpg
+```
+
+---
