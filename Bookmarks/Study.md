@@ -16,7 +16,7 @@ image: https://www.hellointerview.com/assets/brand/ogImages/expert-mock2.png
 ---
 
 
-##### 1.
+##### 2.
 ---
 **Link**: https://learngitbranching.js.org
 **Description**: <span style="color: #03a9fc"> Learn Git command </span>
@@ -31,5 +31,23 @@ favicon: assets/favicon.ico
 image: https://pcottle.github.io/learnGitBranching/assets/learnGitBranching.png
 ```
 
+
+---
+
+
+##### 3.
+---
+**Link**: https://algomaster.io/practice/dsa-patterns
+**Description**: <span style="color: #03a9fc"> DSA Resource </span>
+**Date**: *Monday 9th March 2026*
+
+```cardlink
+url: https://algomaster.io/practice/dsa-patterns
+title: "AlgoMaster.io - Master Software Engineering Interviews"
+description: "Master DSA, Coding Interview Patterns and System Design. Ace your Software Engineering interviews."
+host: algomaster.io
+favicon: https://algomaster.io/favicon-16x16.png
+image: https://algomaster.io/og-image.png
+```
 
 ---

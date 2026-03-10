@@ -29,7 +29,7 @@
           so that none of the side get overwhelmed
     3. Responsible for session multiplexing.
 
-       <img src="resource/Example2.png" width="700" height="300"/>
+       <img src="resource/images/Example2.png" width="700" height="300"/>
 
         * Session Multiplexing : using a single network connection (or session) to handle multiple communication
           streams simultaneously between two devices or applications.
@@ -307,3 +307,5 @@ Route traffic from one network to another. Work on Layer 3 so they are IP aware.
 >When data travels over the Internet, routers use the **destination IP address** to forward packets from one network to another until the destination network is reached. Once the packet reaches the destination local network, the **switch uses the destination MAC address** to deliver the frame to the correct host within that network.
 
 ## Life of a Packet
+[[Life of Packet - to read]]
+

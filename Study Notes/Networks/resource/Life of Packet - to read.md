@@ -154,9 +154,8 @@ DNS uses UDP (usually port 53).
 UDP header:
 
 - Source port: random (e.g. 53000)
-    
+
 - Destination port: 53
-    
 
 ---
 
