@@ -27,9 +27,7 @@
     2. Responsible for flow control.
         * Flow control : If receiver or send are too fast or too slow this layer controls the flow of data
           so that none of the side get overwhelmed
-    3. Responsible for session multiplexing.
-
-       <img src="resource/images/Example2.png" width="700" height="300"/>
+    3. Responsible for session multiplexing. <img src="resource/images/Example2.png" width="700" height="300"/>
 
         * Session Multiplexing : using a single network connection (or session) to handle multiple communication
           streams simultaneously between two devices or applications.
@@ -47,13 +45,9 @@
             - Carries sequencing to ensure packets are received in correct order
             - Lost segment are resnet after an acknowledgement is received.
             - Performs flow control.
-        * TCP 3-way handshake:
+        * TCP 3-way handshake: <img src="resource/images/Example3.png" width="700" height="300"/>
 
-        <img src="resource/images/Example3.png" width="700" height="300"/>
-
-        * TCP headers:
-
-        <img src="resource/images/Example4.png" width="700" height="400"/>
+        * TCP headers: <img src="resource/images/Example4.png" width="700" height="400"/>
 
         * UDP:
             - It is not connection oriented(does not performs handshake).
@@ -62,9 +56,7 @@
             - Does not perform flow control.
             - If error detection and recovery is required upper layers should provide it.
 
-        * UDP Header:
-
-        <img src="resource/images/Example5.png" width="700" height="300"/>
+        * UDP Header: <img src="resource/images/Example5.png" width="700" height="300"/>
 
         * Real time traffic uses UDP.
         * DNS uses TCP and UDP.
@@ -74,9 +66,7 @@
     * Route packets to their destination.
     * No connection protocal, i.e. no handshake/ack is done.
     * Protocol on this layer : IP, ICMP, IPSec.
-    * IP Header :
-
-    <img src="resource/images/Example6.png" width="700" height="400"/>
+    * IP Header :<img src="resource/images/Example6.png" width="700" height="400"/>
 
     * Types of traffic :
         * Unicast : One-to-One communication. If multiple request comes then multiple copies of same will have to
@@ -308,4 +298,5 @@ Route traffic from one network to another. Work on Layer 3 so they are IP aware.
 
 ## Life of a Packet
 [[Life of Packet - to read]]
+
 
