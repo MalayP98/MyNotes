@@ -68,14 +68,16 @@
     * Protocol on this layer : IP, ICMP, IPSec.
     * IP Header :<img src="resource/images/Example6.png" width="700" height="400"/>
 
-    * Types of traffic :
-        * Unicast : One-to-One communication. If multiple request comes then multiple copies of same will have to
-          send to each receiver. Good for private communication.
-        * Broadcast : One-to-All communication. One message is send to everyone on the subnet. Routers do not
-          forward boradcast messages. Comes in use with DHCP server (google this).
-        * Multicast : If we have to send message to multiple receiver using Unicast it will lot of bandwidth
-          , directly propotional to number to receiver. But with multicast, sender just have to send one which
-          gets distributed to all the interested receiver.
+	- Types of traffic
+    
+        #### Unicast
+        One-to-One communication. If multiple request comes then multiple copies of same will have to send to each receiver. Good for private communication.
+        
+        #### Broadcast
+        One-to-All communication. One message is send to everyone on the subnet. Routers do not forward boradcast messages. Comes in use with DHCP server (google this).
+        
+        #### Multicast
+        If we have to send message to multiple receiver using Unicast it will lot of bandwidth, directly propotional to number to receiver. But with multicast, sender just have to send one which gets distributed to all the interested receiver.
 
     * If a packet is going from sender to receiver on same subnet it can go directly(via switch). If sender and receiver
       are
@@ -251,6 +253,7 @@ Uses ==light instead of electrical signals==.  Immune to electromagnetic interf
 
 
 ## Devices
+
 1. **Collision Domain**: Network segment where all device share same communication medium. *TL; DR only one device can transfer data at a time, can cause of this collision might occur.*
 2. **Half-Duplex**: All port have one collision domain, so only one host can transmit data at a time.
 3. **Full-Duplex**: One collision domain per port so all the host can send and receive data at same time.
@@ -298,5 +301,29 @@ Route traffic from one network to another. Work on Layer 3 so they are IP aware.
 
 ## Life of a Packet
 [[Life of Packet - to read]]
+
+
+## Discovery Protocol
+
+Network discovery protocol is used by device to advertise information about themselves to other devices. This lets devices know what other device are connected to it and on which ports.
+
+### CDP
+
+Cisco Discovery Protocol. Proprietary protocol developed by Cisco. Its be default enabled on Cisco devices and works only on Cisco devices. Sends info every 60 secs.
+
+### LLDP
+
+Link Layer Discovery Protocol. It is a open-source discovery protocol. Sends info every 30 secs.
+
+### Commands
+
+```bash
+show lldp neighbours
+
+show cdp neighbours
+```
+
+### How does CDP/LLDP packets travel
+
 
 
