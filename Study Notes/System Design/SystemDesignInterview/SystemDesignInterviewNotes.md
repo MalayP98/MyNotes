@@ -44,24 +44,23 @@
 > each replica to the newest version. A Merkle tree is used for inconsistency detection and
 > minimizing the amount of data transferred.
 > - Quoted from Wikipedia [7]: “A hash tree or Merkle tree is a tree in which every non-leaf
-    node is labeled with the hash of the labels or values (in case of leaves) of its child nodes.
-    Hash trees allow efficient and secure verification of the contents of large data structures”.
+  node is labeled with the hash of the labels or values (in case of leaves) of its child nodes.
+Hash trees allow efficient and secure verification of the contents of large data structures”.
 > - Assuming key space is from 1 to 12, the following steps show how to build a Merkle tree.
-    Highlighted boxes indicate inconsistency.
+Highlighted boxes indicate inconsistency.
 > - Step 1: Divide key space into buckets (4 in our example) as shown in Figure 6-13. A bucket
-    is used as the root level node to maintain a limited depth of the tree.
+is used as the root level node to maintain a limited depth of the tree.
 > - Step 2: Once the buckets are created, hash each key in a bucket using a uniform hashing
-    method (Figure 6-14).
+method (Figure 6-14).
 > - Step 3: Create a single hash node per bucket (Figure 6-15).
 > - Step 4: Build the tree upwards till root by calculating hashes of children (Figure 6-16).
 > - To compare two Merkle trees, start by comparing the root hashes. If root hashes match, both
-    servers have the same data. If root hashes disagree, then the left child hashes are compared
-    followed by right child hashes. You can traverse the tree to find which buckets are not
-    synchronized and synchronize those buckets only.
+servers have the same data. If root hashes disagree, then the left child hashes are compared    followed by right child hashes. You can traverse the tree to find which buckets are not
+synchronized and synchronize those buckets only.
 > - Using Merkle trees, the amount of data needed to be synchronized is proportional to the
-    differences between the two replicas, and not the amount of data they contain. In real-world
-    systems, the bucket size is quite big. For instance, a possible configuration is one million
-    buckets per one billion keys, so each bucket only contains 1000 keys.
+differences between the two replicas, and not the amount of data they contain. In real-world
+systems, the bucket size is quite big. For instance, a possible configuration is one million
+buckets per one billion keys, so each bucket only contains 1000 keys.
 
 ## Chapter 7 : Unique ID generator
 

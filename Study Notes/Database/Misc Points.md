@@ -1,0 +1,4 @@
+- **Postgres** prevents *Phantom Reads* even in *Repeatable Read isolation level*, while in other DBs like MySQL, Oracel you will have to switch to Serializable isolation level.
+- If crash happens during the DB is committing the changes DB cannot guarantee durability. That is, we cannot be sure data persisted or not. Durability is questioned if the commit was successful then crash happened and after the system restarted the DB fails to persists the committed data.
+- Consistency in Data -> as defined in Consistency in ACID properties
+- Consistency in Read -> as defined in Consistency in CAP theorem

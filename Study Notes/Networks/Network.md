@@ -307,6 +307,18 @@ Route traffic from one network to another. Work on Layer 3 so they are IP aware.
 
 Network discovery protocol is used by device to advertise information about themselves to other devices. This lets devices know what other device are connected to it and on which ports.
 
+Details that CDP/LLDP shares,
+
+- Device Name
+- IP Address
+- IOS version
+
+*few details can be different for these protocols*
+
+#### How do they share IP address if they operate on Data Link Layer
+
+Being operated on Data Link Layer does not mean they cannot carry Layer 3 data(like IP address), the only thing is that they will not use IP address to share the information, they will use Ethernet *(which is Layer 2 protocol)*
+
 ### CDP
 
 Cisco Discovery Protocol. Proprietary protocol developed by Cisco. Its be default enabled on Cisco devices and works only on Cisco devices. Sends info every 60 secs.
@@ -325,5 +337,21 @@ show cdp neighbours
 
 ### How does CDP/LLDP packets travel
 
+Discovery protocols work on Data Link layer. This means they do not operate on IPs, they operate on Ethernet. They send multicast frames to send info to neighbours.
+==Because of this router *do not* forward CDP/LLDP packet==
 
+This ethernet format
+`| Preamble | Dest MAC | Src MAC | EtherType | Payload | FCS |`
 
+A CDP/LLDP packet is just **payload** inside Ethernet frame.
+
+A special Destination MAC address is used for CDP and LLDP
+**CDP** -> `01:00:0C:CC:CC:CC`
+**LLDP** -> `01:80:C2:00:00:0E`
+
+Example, 
+
+`| Preamble | 01:00:0C:CC:CC:CC | Src MAC | 0x2000 | CDP Payload | FCS |`
+`| Preamble | 01:80:C2:00:00:0E | Src MAC | 0x88CC | LLDP Payload | FCS |`
+
+Check this to see flow of packets [[Study Notes/Networks/resource/ChatGPT Responses/Response 1|Response 1]]

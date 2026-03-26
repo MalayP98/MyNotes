@@ -154,6 +154,44 @@ Transaction A's update is lost.
 
 [[Study Notes/Database/ChatGPT Responses/Response 1|Response 1]] - check this for more.
 
+
+#### Write Skew
+
+When 2 txn take a decision on same data and changes the data on this decision.
+Example, ==On-Call Doctor problem==
+
+|Doctor|OnCall|
+|---|---|
+|A|Yes|
+|B|Yes|
+
+**Transaction T1**
+```sql
+BEGIN;  
+SELECT * FROM doctors WHERE OnCall = 'Yes';  
+-- Sees A and B  
+UPDATE doctors SET OnCall='No' WHERE Doctor='A';  
+COMMIT;
+```
+
+**Transaction T2**
+```sql
+BEGIN;  
+SELECT * FROM doctors WHERE OnCall = 'Yes';  
+-- Sees A and B  
+UPDATE doctors SET OnCall='No' WHERE Doctor='B';  
+COMMIT;
+```
+
+Final state:
+
+|Doctor|OnCall|
+|---|---|
+|A|No|
+|B|No|
+
+**Point to remember**:
+Write skew is only prevented by serializable isolation because if serializable isolation see will either block one of the transaction or will throw an error
 ### Isolation Levels
 Isolation levels tell how much can multiple txn can see each others update.
 
@@ -259,3 +297,69 @@ The transaction writes data to memory(RAM), at the time of commit changes are pu
 Problem with WAL is that when DB asks OS to write data/changes to log file the OS stores the data/changes to OS cache and returns that the data has been saved successfully. If at this point OS crashes the changes wont be written to log file.
 
 To prevent this DB uses *fsync* method which writes the data/changes directly to the file and is thus responsible for *slower commits*.
+
+
+# Table Structure
+
+Database stores data in *fixed size* blocks called pages. Each page `n` byte long depending on the database being used.
+Example, Postgres has *8 KB* pages.
+
+An empty page has page header which has a prefixed size, example 10 byte.
+```
+Page Layout
++---------------------+
+| Page Header(10btyes)|
++---------------------+
+|                     |
++                     +
+|                     |
+|Free Space(8182bytes)|
+|                     |
++                     +
+|                     |
+|                     |
+|                     |
++---------------------+
+```
+
+Inside a page everything is identified by byte offset. So if we want to refer a row we give the offset for that row.
+
+Example, 
+
+```sql
+RowA -> offset 7600
+```
+
+## Problem with byte offsets
+
+If we use byte offset indexes will also have to use byte offset.
+Indexes refer to page number and the row offset, example,
+
+```sql
+IDXA -> (Page 5, Offset 7600)
+```
+
+This means that value `IDXA` is present at page 5 and the row starts at byte 7600.
+If something happens and the row shifts to some other byte offset because of it being updated or other rows being deleted the offset in the index wont change and now the index will still point to same Offset(i. e 7600)
+To solve this problem database came up with *slots*.
+
+## Slot
+
+Slot is part of the page.  Each slot points a offset in the page. And now every row is referred by the slot where it is present and not the offset.
+Example, 
+```
+SlotA -> 7600
+SlotB -> 7800
+
+RowA -> SlotA
+RowB -> SlotB
+```
+
+Similarly now index also point to slots and not offset.
+
+```sql
+IDXA -> (Page 5, SlotA)
+```
+
+### How will slot help?
+
