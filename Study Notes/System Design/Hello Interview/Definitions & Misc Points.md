@@ -84,3 +84,5 @@ Cache invalidation ensures **cached data stays consistent with the database** 
 | **Write-around**              | Write goes directly to DB, cache updated on next read | First read slow, later reads fast | Fast        | Avoids caching unnecessary data              |
 | **Write-back (Write-behind)** | Write goes to cache first, DB updated asynchronously  | Fast                              | Very fast   | Risk of data loss if cache crashes           |
 | **Explicit Invalidation**     | On DB update, cache entry is deleted/updated          | Fast after refresh                | Normal      | Most common approach in real systems         |
+
+

@@ -329,3 +329,72 @@ Provides 2 locks. Read lock allows multiple threads and write only allows single
 
 ## Inter Thread Communication
 
+Threads communication using methods like `wait()`, `notify()`, `notifiyAll()`
+
+### Condition variable
+
+Don't get confused with the name, this variable does not actually holds the actual 'condition'.
+
+```java
+ReentrantLock reentrantLock = new ReentrantLock();  
+Condition someCondition = reentrantLock.newCondition();
+```
+
+Condition variable lets thread wait and notify like `wait()` and `notify()` in Object class.
+
+The difference is that each `Condition` variable can be considered a new waiting queue.
+
+Example,
+
+<img src="Resources/Images/Example4.jpeg" width=600 height=600/>
+
+
+#### How does conditional fixes this?
+
+`Conditional` fixes the problem by creating 2 separate queues for consumer waiting condition and producer waiting condition
+
+```java
+Condition notFull = lock.newCondition();
+Condition notEmpty = lock.newCondition();
+
+void producer(){
+	while(true){
+		lock.lock();
+		if(queue is at full capacity){
+			notEmpty.await();
+		}
+		queue.add(item);
+		notFull.signal();
+		lock.unlock();
+	}
+}
+
+void consumer(){
+	while(true){
+		lock.lock();
+		if(queue is empty){
+			notFull.await();
+		}
+		useItem(queue.remove());
+		notEmpty.signal();
+		lock.unlock();
+	}
+}
+```
+
+`Condition` variables, `notFull` and `notEmpty` create 2 separate queues for producer threads and consumer threads. If `signal` is called on `notEmpty` only producer threads are notified and consumer threads. This guarantees that an item will be produced.
+
+
+|Method|Type|What it does|
+|---|---|---|
+|await()|Blocking|Releases the lock and waits until signaled|
+|awaitUninterruptibly()|Blocking|Same as await(), but ignores interruptions|
+|awaitNanos(nanos)|Blocking|Waits for given time (in nanoseconds) or until signaled|
+|await(time, unit)|Blocking|Waits for specified time or until signaled|
+|awaitUntil(date)|Blocking|Waits until a specific deadline (absolute time)|
+|signal() | Notification| Wakes up ONE thread waiting on this condition  
+|signalAll() | Notification| Wakes up ALL threads waiting on this condition
+
+###
+If we want to create producer consumer without `Condition` variable only using `wait`/`notify` we will have to use 3 monitors. Check this [[ProducerConsumerThreeMonitors.java]]
+
