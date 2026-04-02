@@ -4,26 +4,26 @@
 - Normalization introduced joins which can be slow. 
   De-normalization is expensive if you want to update data. For example, 
   There is a denormalized table like so,
-  
-  | ProductID | UserName |
-  |---|---|
-  | 1 | testuser |
-  | 2 | testuser |
-  | 3 | testuser |
+
+| ProductID | UserName |
+| --------- | -------- |
+| 1         | testuser |
+| 2         | testuser |
+| 3         | testuser |
   
   Now if the `testuser` changes their name to `testuser1` then we will have to update rows.
   
   If this table was normalized like this,
   
-  | ProductID | UserID |
-  |---|---|
-  | 1 | 10 |
-  | 2 | 10 |
-  | 3 | 10 |
+| ProductID | UserID |
+| --------- | ------ |
+| 1         | 10     |
+| 2         | 10     |
+| 3         | 10     |
   
-  | UserID | Username |
-  |---|---|
-  | 10 | testuser |
+| UserID | Username |
+| ------ | -------- |
+| 10     | testuser |
   
   In this case we just have to change the *Username* in the User table once.
 - A safe approach in interview is to start with Normalized DB and then Denormalize it if required.
