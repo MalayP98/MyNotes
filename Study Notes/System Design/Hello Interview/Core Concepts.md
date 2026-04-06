@@ -11,6 +11,9 @@
 - Use SSE when you want the client to have an update as soon as the event occurs. Example, Bidding applications.
 - When we send data via SSE some old proxies might start buffering the data until all the data is received rather than sending the data to the client in chunks. Read [[Problem with SSE]]
 - NAT device is basically router.
+- Router usually has 2 interfaces one with private IP *(like 192.168.0.x)* and one public IP that eventually connects us to the internet *l(ike 49.207.210.28)*
+- Websockets are to be used when we need high-frequency, bi-directional and persistent comm b/w client and server, example Games, Messaging apps.
+- WebRTC is used when Audio/Video conferencing is involved *(or maybe in collaborative editors like GoogleDoc)*
 
 ## TCP vs UDP
 
@@ -74,10 +77,108 @@ It is faster than REST and uses ==Protocol Buffer (ProtoBuff)== instead of JSON.
 |Network Access (Link)|Local network communication (MAC layer)|Ethernet (802.3), Wi-Fi (802.11), ARP, PPP|
 |Physical|Transmission of raw bits (signals)|Cables, Fiber optics, Radio signals|
 
+## Load Balancer
+### Client-Side LB
 
-"## TCP vs UDP
-| ProductID | UserName |
-| --- | --- |
-| 1 | testuser |
-| 2 | testuser |
-| 3 | testuser |
+Client choose the server themselves. This is faster and efficient as client is making decision.
+#### Examples
+
+##### Redis
+
+Redis cluster maintain *gossip protocol*. Using this every server (node) know about every server.
+
+| Node | Alive? | Data    |
+| ---- | ------ | ------- |
+| N1   | Yes    | 1-200   |
+| N2   | Yes    | 201-400 |
+| N3   | No     | 401-600 |
+
+Client queries any one server and get the data about all the servers. If now client want to `SET` some value into the cache it just uses a **agreed** hash function to hash the key. Hashing the produced a number which indicate the slot where the data should go. From the above table client can decide which node that slot belongs to and sends the request to that Node.
+
+```
+SET test = "VALUE"
+hash = CRC16("VALUE") = 245
+245 -> N2 Node
+Request -> N2
+```
+
+#### How to avoid Single Point of Failure if we have one load balancer?
+
+Create multiple LBs with lets say IPs `IP1, IP2, IP3....IP4`.. We can configure DNS to return multiple load balancer IPs. DNS may rotate these IPs across different clients, helping distribute traffic and reduce SPOF, although caching means a single client may still use the same IP for some time. <span style="color: red;font-size: 12px;">(Note: This is one way to avoid LB SPOF. Check others also.</span>
+
+==Use Client-side LB for internal microservices. For other external service rely on Dedicated LBs.==
+
+<img src="resource/Images/Example1.png" width=500 height=300/>
+
+
+### Layer 4 LB
+
+L4 LB operate on *Transport Layer*. Route traffic based on IP and Ports and not the what data is inside the request.
+Once a TCP is connection is opened between client and server via LB it stays open *(until it is explicitly closed or times out due to inactivity)*. So now the request from a client will always goes to the same server until the TCP connection is closed.
+TCP connection can be closed: 
+- If a client closes it by sending FIN *(FIN Handshake)*
+- Some network crash happens.
+- Idle timeout *i. e.* no traffic for a configured duration
+All the request/response goes via LB. There is something called DSR which when enable send *responses* directly from server to client *(without LB)*
+
+==L4 LBs are good for websocket connections or protocol the require persistent connection.==
+
+### Layer 7 LB
+
+- Operates at Application Layer of OSI Model
+- Understands protocols like HTTP
+
+Core Idea:
+- Routes traffic based on request content (not just IP/Port)
+
+Key Characteristics:
+- Terminates client connection and creates a new connection to backend
+- Acts as a proxy between client and server
+- Can route based on:
+  - URL (e.g., /api, /login)
+  - Headers
+  - Cookies
+  - User/session data
+- More CPU intensive (due to request inspection)
+- Provides advanced features:
+  - Authentication
+  - Rate limiting
+  - A/B testing
+  - Sticky sessions (via cookies)
+
+Routing Behavior:
+- Works at request level (not connection level)
+- Multiple requests on same TCP connection can go to different servers
+
+When to Use:
+- Best for HTTP/HTTPS traffic
+- When smart routing and flexibility is needed
+
+Limitations:
+- Higher latency compared to L4
+- Not suitable for non-HTTP protocols
+
+### Misc
+
+- If there are too many requests, software/cloud LBs might not be able to handle them. In this case use hardware LBs
+- LBs can perform Health Checks by sending a HTTP request.
+
+
+## CDN
+
+Network of servers which delivery the data to the user faster. Serves the request from nearest server from the user. Caches data *(usually static data like images, video)*
+
+### Edge Location / Edge Server  
+  
+- **Edge Location**: Physical data center located closer to users (distributed globally)  
+- **Edge Server**: Server inside an edge location that caches and serves content
+
+### How CDN Works  
+  
+1. User requests content (e.g., image, video, API response)  
+2. Request is routed to nearest edge server (via DNS)  
+3. Edge server checks:  
+- If content is cached → return immediately  
+- If not cached → fetch from origin server  
+1. Origin server sends content to edge server  
+2. Edge server caches content and returns it to user
