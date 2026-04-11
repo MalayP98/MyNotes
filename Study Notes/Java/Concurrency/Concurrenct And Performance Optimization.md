@@ -398,3 +398,41 @@ void consumer(){
 ###
 If we want to create producer consumer without `Condition` variable only using `wait`/`notify` we will have to use 3 monitors. Check this [[ProducerConsumerThreeMonitors.java]]
 
+## Lock-Free
+
+### Problem with locks
+- **Dead locks** - They are generally unrecoverable; Application comes to halt; More locks in app more chance of deadlock
+- **Slow critical section** - if a slow thread holds the lock all the other threads will slow down.
+- **Priority Inversion** - 
+  >OS give lock to higher priority threads. Higher priority threads take a lock frequently. OS take some time to schedule a lower priority threads. If a threads preempts while it was acquiring the lock it won't release the lock on preemption.
+  
+  **Problem** – If a lower-priority thread acquires a lock and the OS preempts it, higher-priority threads will be blocked because the lock is already held. For the lock to be released, the OS must resume the lower-priority thread. However, since it has a lower priority, it may be scheduled later, causing delays.
+- **Performance issue** - Context switching takes times. If Thread-B comes sees Thread-A has the lock the OS will schedule out and schedule back the Thread-B. [[Schedule Back & Schedule Out]]
+
+### Lock-Free operations
+
+- Read/Assigning
+  1. on primitive *(except `long` and `double`)*
+  2. on all References
+  3. on *volatile* `long` and `double`
+- Atomic classes in Java. <span style="color: red; font-weight: bold">Atomic class don't use `synchronize`. They use low level lock-free CPU operations. Thats why they are called lock free</span>
+
+`AtomicReference<T>` is one of the most important class. It has method called `compareAndSet(T expected, T newValue)`. If the *expected* value is same as the current value of the reference then the *newValue* is assigned to the reference else nothing happens.
+Example,
+```java
+AtomicReference<String> atomicRef = new AtomicReference<>("Hello");
+atomicRef.compareAndSet("Hello", "World"); // this will set the string to "World"
+```
+
+Check this implementation of a Lock-Free Stack using *AtomicReference* - [[LockFreeStack.java]]
+
+## Threading Models for High Performance
+
+Blocking I/O is a problem. If a system is operating on 4 threads, and the method that these thread are calling has a Blocking I/O (example, a DB call). In this case these 4 threads will wait and the CPU will be ideal, but wont be able to run/serve new request because it has no thread.
+
+### Solution
+
+#### Threads per Task/Request
+
+The idea here is to create new thread for every new request or task submitted.
+This works well until the number of task/request increase so much that the JVM is not able to handle it and throws exception.

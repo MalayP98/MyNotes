@@ -182,3 +182,26 @@ Network of servers which delivery the data to the user faster. Serves the reques
 - If not cached → fetch from origin server  
 1. Origin server sends content to edge server  
 2. Edge server caches content and returns it to user
+
+## Circuit Breaker
+
+### Cascading failure
+
+When failure in one system propagates / spreads to the upstream systems / dependent systems.
+Example,
+1. Service A depends on Service B  
+2. Service B becomes slow or unavailable  
+3. Service A keeps waiting or retrying  
+4. Threads/resources in A get blocked  
+5. Service A starts failing  
+6. Failure propagates to other services 
+
+A circuit breaker keeps track of the failures, if the number of failures exceed a threshold the *circuit opens* and the calls are blocked from going to the next system(which is slow or causing failure). The *circuit half-opens* to send test calls to system to check if it is fixed. If everything is fine now the *circuit closes* and things start to function normally again.
+
+### Benefits
+
+- Fail Fast: Quickly reject requests to failing services instead of waiting for timeouts
+- Reduce Load: Prevent overwhelming already struggling services with more requests
+- Self-Healing: Automatically test recovery without full traffic load
+- Improved User Experience: Provide fast fallbacks instead of hanging UI
+- System Stability: Prevent failures in one service from affecting the entire system
