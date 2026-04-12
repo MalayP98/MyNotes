@@ -1,6 +1,4 @@
 
-# Network
-
 ## General Points
 
 - When to use UDP over TCP:
@@ -60,12 +58,20 @@
 If we under-fetch then the API calls will increase get the same amount of data. This will lead to latency, backend load.
 If we over-fetch then the API will bring lots of data and also increase latency.
 
+When to use:
+- Multiple clients with different data needs  (e.g., mobile vs web)  
+- Avoid over-fetching and under-fetching  
+- Frontend needs flexibility to request only required data  
+- Faster frontend iteration without backend changes
+
 This can be solved using *GraphQL*. GraphQL basically is just a query we send to the backed to get the exact data we want (like querying a DB). Server interprets these queries and responds accordingly.
+GraphQL has [N+1](#api-design) problem. 
 
 ## gRPC
 
 RPC -> calling a method on different server like its on local server.
 It is faster than REST and uses ==Protocol Buffer (ProtoBuff)== instead of JSON.
+If the interviewer specifically mentions microservices or internal APIs, consider RPC for those high-performance connections.
 
 ## Layers v/s Protocols
 
@@ -205,3 +211,4 @@ A circuit breaker keeps track of the failures, if the number of failures exceed 
 - Self-Healing: Automatically test recovery without full traffic load
 - Improved User Experience: Provide fast fallbacks instead of hanging UI
 - System Stability: Prevent failures in one service from affecting the entire system
+
