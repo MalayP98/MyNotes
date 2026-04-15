@@ -65,7 +65,7 @@ When to use:
 - Faster frontend iteration without backend changes
 
 This can be solved using *GraphQL*. GraphQL basically is just a query we send to the backed to get the exact data we want (like querying a DB). Server interprets these queries and responds accordingly.
-GraphQL has [N+1](#api-design) problem. 
+GraphQL has N+1 (ref, [[API Design#N+1 Problem]]) problem. 
 
 ## gRPC
 
