@@ -4,6 +4,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static Code.src.com.extras.Utils.blockFor;
+
 public class ContextSwitchExample {
 
     private static final int REQ = 10000;
@@ -51,14 +53,6 @@ public class ContextSwitchExample {
         endTime = System.currentTimeMillis();
         System.out.println("Total time for Simulation 2: " + (endTime - startTime) + " ms");
 
-    }
-
-    private void blockFor(int milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     private void blockingTaskV1(){

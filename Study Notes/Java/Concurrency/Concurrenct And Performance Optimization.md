@@ -440,3 +440,19 @@ This works well until the number of task/request increase so much that the JVM i
 **Context switch take time** - if we run a 10000 tasks and each task takes, lets say, 1000 ms blocking call, this operation will be faster than if we ran 10000 tasks and each task has 100 blocking call when each call is blocked for 10 ms(which make the total wait to 1000 ms).
 Example, [[ContextSwitchExample.java]]
 
+If *fire&forget* is concerned(i. e you don't want to use the data that a blocking call returns) `FutureTask` and `CompletableFuture` work similarly.
+Check [[FutureTaskVSCompletableFuture.java]] for difference. Explaination,
+```java
+void ft(){
+	int x = blockingCall(); // take 5 sec
+	print(x); // happens after 5 sec
+	print("Done!!") // happens after 5 sec
+}
+
+void cf(){
+	CompletableFuture.supply(blockingCall()).apply(print(x)); // take 5 sec
+	print("Done!!") // Done!! prints before printing value of x
+}
+```
+
+

@@ -4,6 +4,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static Code.src.com.extras.Utils.blockFor;
+
 public class NonBlockingIO {
 
     public static void main(String[] args) throws InterruptedException {
@@ -19,14 +21,6 @@ public class NonBlockingIO {
         System.out.println("By Main thread : " + (end - start) + " ms");
 
 
-    }
-
-    private static void blockFor(int milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
 }
