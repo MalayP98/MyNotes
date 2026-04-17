@@ -437,7 +437,7 @@ Blocking I/O is a problem. If a system is operating on 4 threads, and the method
 The idea here is to create new thread for every new request or task submitted.
 This works well until the number of task/request increase so much that the JVM is not able to handle it and throws exception. To overcome this we restrict the size of thread-pool to a certain number.
 
-**Context switch take time** - if we run a 10000 tasks and each task takes, lets say, 1000 ms blocking call, this operation will be faster than if we ran 10000 tasks and each task has 100 blocking call when each call is blocked for 10 ms(which make the total wait to 1000 ms).
+**Context switch take time** - if we run 10000 tasks and each task takes, lets say, 1000 ms blocking call, this operation will be faster than if we ran 10000 tasks and each task has 100 blocking call when each call is blocked for 10 ms(which make the total wait to 1000 ms).
 Example, [[ContextSwitchExample.java]]
 
 If *fire&forget* is concerned(i. e you don't want to use the data that a blocking call returns) `FutureTask` and `CompletableFuture` work similarly.
