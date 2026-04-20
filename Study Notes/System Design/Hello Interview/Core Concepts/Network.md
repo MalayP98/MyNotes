@@ -114,7 +114,7 @@ Create multiple LBs with lets say IPs `IP1, IP2, IP3....IP4`.. We can configure 
 
 ==Use Client-side LB for internal microservices. For other external service rely on Dedicated LBs.==
 
-<img src="resource/Images/Example1.png" width=500 height=300/>
+<img src="../resource/Images/Example1.png" width=500 height=300/>
 
 
 ### Layer 4 LB
@@ -211,4 +211,3 @@ A circuit breaker keeps track of the failures, if the number of failures exceed 
 - Self-Healing: Automatically test recovery without full traffic load
 - Improved User Experience: Provide fast fallbacks instead of hanging UI
 - System Stability: Prevent failures in one service from affecting the entire system
-
