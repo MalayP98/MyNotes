@@ -34,6 +34,30 @@ detect hot spots by monitoring shard metrics like query latency, CPU usage, and 
 - **Split shards dynamically:** When a shard becomes too big or busy, *split and rebalance it* (automatically in some DBs like MongoDB, or manually in systems like Vitess).
 
 
+**Cross-Shard Operation** - operation which need to query all the shards; example, get top 10 posts, for this application have to go to all the shards to get the data and aggregate the result.
+
+**Solutions** -
+
+- **Cache** - cache the result of cross-shard queries; first query -> expensive, next queries -> fast; if the result is stored in cache and a DB update happens then user might not see the updated result immediately, so this solution is good for eventually consistent systems
+  
+- **De-normalize** - keep related data together; if sharding is done on `user_id` then keep user related data like post, comments on user's shard so that app does not have to query different shards to get user info; **==duplicates data and updates are complicated update but is worth the trade-off==**
+
+- **Acceptance** - if a query has to move across shard for data but the get rarely executed it fine 🙂‍↕️ 🙃
+
+**Maintaining Consistency** - if user data is on one shard and transaction data is on other shard and there a method which wants to update both the table it cannot happen in a single *transaction*
+
+**Solution** - 
+
+**2 Phase Commit (2PC)** - a coordinator makes sure all the transaction are ready in all the shards, when ready it asks everyone to commit; *not used it production as coordinator becomes SPF*
+
+**Design** - design in such a way that all related data is on same shard; *same as de-normalization*
+
+**SAGA** - rather than a single transaction, the process is broken into different transactions and if a transaction fails, a compensating  action is performed; example, if the order fails, first a method called `removeOrderFromUser` might next on payment service a method called `refundToUser` might run and so on.
+
+> **SAGA = split + execute + rollback in reverse using compensations**
 
 
+## When to use sharding?
 
+- When the storage increase, writes increase and even read replicas are not able to handle reads; if any one these happens introduce sharding.
+- What shard key to choose -> Sharding strategy and why -> List Trade-Offs -> How to handle growth3  

@@ -2,6 +2,9 @@
 - `find <PATH> -user <USERNAME> 2> /dev/null`; 2 is specified for stderrs and `>` send those errors to ==black hole== *i. e* `/dev/null`
 - `cat <FILE> | base64 --decode`
 - `rot13` cypher technique to rotate chars by 13 place; example A -> N
+- `uniq` - gives unique elements; can only give unique elements if they are consecutive
+- `nc` is NetCat
+
 
 ## Passwords
 - Lev 1 -> ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
@@ -16,3 +19,8 @@
 - Lev 10 -> FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
 - Lev 11 -> dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
 - Lev 12 -> 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+- Lev 13 -> FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+- Lev 14 -> MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
+- Lev 15 -> 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
+- Lev 16 -> kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
+- 

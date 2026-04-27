@@ -1,0 +1,5 @@
+- **Consistency matters even here:** It affects when a short URL becomes visible and whether all servers return the same result.
+- **Read-after-write issue:** Right after creating a short URL, some servers may not have it yet → temporary “not found”.
+- **Replication & cache delays:** Data and cache updates can lag, causing inconsistent reads across regions.
+- **Write consistency is critical:** Must ensure one short URL maps to only one long URL (avoid collisions/overwrites).
+- **Final takeaway:** Strong consistency for writes, eventual consistency for reads.
