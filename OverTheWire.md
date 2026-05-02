@@ -4,6 +4,10 @@
 - `rot13` cypher technique to rotate chars by 13 place; example A -> N
 - `uniq` - gives unique elements; can only give unique elements if they are consecutive
 - `nc` is NetCat
+- `sudo -v` to check your sudo permissions
+- `nc <IP/HOST> <POST>`; `echo "..." | nc <IP/HOST> <POST>`; with ssl `echo "..." | ncat --ssl <IP/HOST> <PORT>`
+- PEM keys permission should be `400` to be accessed by server
+- `ss -tunl` get you all listening TCP ports; `ss` -> socket static
 
 
 ## Passwords
@@ -23,4 +27,9 @@
 - Lev 14 -> MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
 - Lev 15 -> 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
 - Lev 16 -> kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
-- 
+- Lev 17 -> [[Lev17 PEM]]
+- Lev 18 -> x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
+- Lev 19 -> cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8
+- Lev 20 -> 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
+- Lev 21 -> EeoULMCra2q0dSkYj561DX7s1CpBuOBt
+
