@@ -1,4 +1,4 @@
-In MySQL InnoDB:       
+In MySQL InnoDB:
 Repeatable Read also prevents phantom reads using **next-key locking**.
 
 In PostgreSQL:  
