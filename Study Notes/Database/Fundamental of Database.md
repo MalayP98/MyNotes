@@ -152,7 +152,7 @@ But correct balance should be **1800**
 
 Transaction A's update is lost.
 
-[[Study Notes/Database/ChatGPT Responses/Response 1|Response 1]] - check this for more.
+[[Write Skew|Write Skew]] - check this for more.
 
 
 #### Write Skew
@@ -282,7 +282,7 @@ Now:
 Total = 1300 ❌
 
 That violates business rule.
-Refer [[Response 3]] for more examples on Consistency
+Refer [[Constraints]] for more examples on Consistency
 
 
 ## Durability
