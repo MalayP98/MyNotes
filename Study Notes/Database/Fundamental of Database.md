@@ -203,7 +203,7 @@ Means that a txn can read committed changes from other txn. Prevents *dirty read
 
 #### Repeatable Reads
 Makes sure that if a txn reads a row it will see that same row throughout its txn *even if other txn modify that data*. This possible by taking snapshot. Prevents dirty and non-repeatable reads. 
-May also prevent phantom reads but that depends on the database. [[Response 2]]
+May also prevent phantom reads but that depends on the database. [[Study Notes/Database/ChatGPT Responses/Response #43530632]]
 Row level.
 
 #### Serializable
@@ -345,7 +345,7 @@ To solve this problem database came up with *slots*.
 
 ## Slot
 
-Slot is part of the page.  Each slot points a offset in the page. And now every row is referred by the slot where it is present and not the offset.
+Slot is part of the page.  Each slot points to a offset in the page. And now every row is referred by the slot where it is present and not the offset.
 Example, 
 ```
 SlotA -> 7600
@@ -361,5 +361,31 @@ Similarly now index also point to slots and not offset.
 IDXA -> (Page 5, SlotA)
 ```
 
+```
++----------------------+
+| Header               |
++----------------------+
+| Slot 0 → Row A       |
+| Slot 1 → Row B       |
+| Slot 2 → Row C       |
++----------------------+
+|      Free Space      |
++----------------------+
+| Row C                |
+| Row B                |
+| Row A                |
++----------------------+
+```
+
+
 ### How will slot help?
+Without slot if we move a row we won't know where it went and will have to search it, maybe again and again. But with slot we always store row address in the slot and row can anywhere.
+
+### What happens if a row is updated with a larger data?
+
+> When a row grows during an update, it may not fit in its original location, so the database writes it elsewhere and updates the slot pointer. The old location becomes dead space, creating fragmentation(hole) inside the page.
+> <img src="resource/images/DBHole.png" width=1100 height=500/>
+
+
+# Database indexes
 

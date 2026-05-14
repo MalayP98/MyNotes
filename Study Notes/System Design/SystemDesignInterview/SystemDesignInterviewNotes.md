@@ -21,12 +21,12 @@
   *D([s0, 1], [s1, 1])] is an ancestor of D([s0, 1], [s1, 2])*
 * X is sibling of Y if there is any participant in Y's vector clock who has a counter that is less than its
   corresponding counter in X. Example, *D([s0, 1], [s1, 2]) and D([s0, 2], [s1, 1])*
-* Resoulution :
+* Resolution :
     1. __Automatic merge__ : If the data is mergeable, merge them. Example, *Shopping cart*
     2. __Last write win__ : Pick update with latest version.
     3. __Application-level__ resolution : User needs to merge. Example, *Merge conflicts in git*
 
-### Gossip protocal for failure
+### Gossip protocol for failure
 
 * Used to know when a server is down.
 * Working :

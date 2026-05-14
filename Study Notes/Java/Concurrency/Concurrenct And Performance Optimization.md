@@ -321,7 +321,7 @@ t1.interrupt(); // the thread will stop waiting (if waiting) and release the loc
 Reentrant lock also provided fairness.
 If there are plenty of threads in line to acquire a lock and certain thread somehow is acquiring the lock everytime the other threads will starve. This is unfair. 
 With Reentrant lock we set fairness to `true`, `Lock lock = new ReentrantLock(true)` this will makes sure every thread gets a chance to acquire the lock.
-The threads will execute in order, first come first serve basis, this will reduce the throughput of the application, read more [[Study Notes/Java/Concurrency/ChatGPT Responses/Response 1]].
+The threads will execute in order, first come first serve basis, this will reduce the throughput of the application, read more [[Impact of fairness on throughput]].
 
 ### ReentrantReadWriteLock
 Provides 2 locks. Read lock allows multiple threads and write only allows single thread at a time. If atleast one thread has acquired read lock another thread cannot acquire write lock. If a thread have acquired write lock no thread can acquire read lock.

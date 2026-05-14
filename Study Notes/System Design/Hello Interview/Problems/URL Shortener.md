@@ -51,7 +51,7 @@ Example -> [Bit.ly](https://www.hellointerview.com/learn/system-design/problem-b
 
 **Hash** - very low collision *(different strings can have same hash code)*;  this is **predictable** because anyone can guess the which URL has been shortened; example, if `hash(www.google.com) = jnwoin12`, then some can use hit and trial to check which URL's hash gives `jnwoin12` as a result; **==same string has same hash==** ^hash
 
-**Hash + Salt** - `hash(www.google.com + <SOME_SALT>)`; this give us randomness so the output is no more predictable; we lose same string same code property *(if that was required)* ^saltedhash
+**Hash + Salt** - `hash(www.google.com + <SOME_SALT>)`; this give us randomness so the output is ==*no more predictable*==; we lose same string same code property *(if that was required)* ^saltedhash
 
 Once [[#^hash]] or [[#^saltedhash]] is used we need to *Base62* encode it and then pick the first `N` characters as the short code.
 
