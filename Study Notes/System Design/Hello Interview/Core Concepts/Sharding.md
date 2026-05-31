@@ -31,10 +31,12 @@ detect hot spots by monitoring shard metrics like query latency, CPU usage, and 
 
 - **Use compound shard keys:** Combine fields (e.g., `user_id + date`) to *spread heavy traffic across multiple shards* instead of one. This spreads a single user's data across multiple shards over time, which helps if the hot spot is both high volume and spans time periods
 
-- **Split shards dynamically:** When a shard becomes too big or busy, *split and rebalance it* (automatically in some DBs like MongoDB, or manually in systems like Vitess).
+- **Split shards dynamically:** When a shard becomes too big or busy, *split and rebalance it* (automatically in some DBs like MongoDB, or manually in systems like [Vitess](https://vitess.io)).
 
 
 **Cross-Shard Operation** - operation which need to query all the shards; example, get top 10 posts, for this application have to go to all the shards to get the data and aggregate the result.
+
+**Other problems -** ***==Joins, Maintaining Transaction, Rollbacks==***
 
 **Solutions** -
 

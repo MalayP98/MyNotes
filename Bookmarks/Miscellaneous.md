@@ -79,3 +79,18 @@ image: https://fmhy.net/__og_image__/og.webp
 ```
 
 ---
+
+##### 6.
+---
+**Link**: https://emojidb.org/tick-cross-emojis
+**Description**: <span style="color: #03a9fc"> EmojiDB </span>
+**Date**: *Sunday 24th May 2026*
+
+```cardlink
+url: https://emojidb.org/tick-cross-emojis
+title: "Tick Cross Emojis | ❌✅✅❌❌✅ | Copy & Paste"
+host: emojidb.org
+favicon: https://emojidb.org/file-folder_1f4c1.png
+```
+
+---

@@ -389,3 +389,161 @@ Without slot if we move a row we won't know where it went and will have to searc
 
 # Database indexes
 
+**Sequential Scan**: Reading all the rows in the table. Fast when the table is small. Example, 
+```sql
+select * from table_name;
+```
+
+**Index Scan (Random Scan)**: First the DB checks the index and then it goes to exact row. *Can be slow if there is lot of data*. ^idxscan
+
+#### Sometimes Sequential Scan is preferred even on indexed columns
+Example table,
+
+| id  | name  | grade |
+| --- | ----- | ----- |
+| 1   | Alice | 3     |
+| 2   | Bob   | 4     |
+
+This is table of students and their grades. Grades range from 1 to 10 and this table has 1 million rows. Indexed on `id` and `grade`
+
+The first query is,
+```sql
+select * from student where grade = 3;
+```
+In this case the student with `grade` 3 are going to be few (compared to the 1 million) lets say 10000.
+The DB knows this and searches using index because the number of rows are low.
+
+Lets take another query,
+```sql
+select * from student where grade != 3;
+```
+In this case the DB know that the numbers of rows are huge and almost equal to 1 million. In this case doing a index scan will be slow as it is random access. So it is *better to do full table scan*.
+<img src="SeqScan.png" width=800 height=500/>
+#### 2 types of index scan
+
+**Index Scan**: Same as [[#^idxscan]]
+
+<img src="IndexScan.png" width=1600 height=150/>
+
+**Index Only Scan**: All the data is in the index and DB does not have go to fetch more data. Example, If we need anything other than index in the `select` query the DB performs *index scan* as we need data other than index which will required DB to fetch page and slot.
+
+<img src="IndexOnlyScan.png" width=800 height=120/>
+
+#### Bitmap Scan
+Rather than doing random scan when using idexes, DB marks the rows where the data is present *(row that passes the where clause)* using a bitmap
+```
+1 2 3 4 5 6 7 8 9
+1 1 0 0 1 0 1 1 0
+```
+This show that row `1,2,5,7,8` passes the condition and others don't.
+Once this bitmap is created DB does a **near-sequential** scan.
+
+1. DB needs to fetch almost all the rows -> Sequential Scan
+2. DB needs to fetch less rows -> Index / Index Only Scan *(if index is present)*
+3. DB need to fetch mid amount of rows -> Bitmap Scan
+
+**Bitmap Combination Scan**
+
+When a `OR` or a `AND` condition is used in a query the DB make bitmap for all the condition and take a `OR` or a `AND` operation on the bitmaps. Example, 
+```sql
+-- Bitmap A
+1 2 3 4 5 6 7
+0 1 1 0 0 1 1
+```
+
+```sql
+-- Bitmap B
+1 2 3 4 5 6 7
+1 1 0 0 1 0 0
+```
+
+Result - lets say `OR`
+
+```sql
+-- ORing A and B
+1 2 3 4 5 6 7
+1 1 1 0 1 1 1
+```
+
+DB then does a **Bitmap Heap Scan** which similar to *Sqen Scan*, just that Sqen Scan scans the entire table but Bitmap Heap Scan only scan the relevant  rows.
+
+<img src="BitmapScan.png" width=800 height=190/>
+#### Why does condition recheck happens?
+<img src="Recheck.png" width=700 height=190/>
+This happens because Bitmaps are *lossy*.
+**Lossy**: Bitmap marks pages and not rows, so for example if index looks something like this,
+```txt
+id_idx | (page, slot)
+1   | (1, 3)
+2   | (1, 4)
+3   | (4, 6)
+4   | (9, 5)
+.
+.
+.
+```
+
+In this case bitmap will store
+
+```txt
+page | condition valid
+1    | passes (this page pass the condition and might have some data)
+2    | passes (this page pass the condition and might have some data)
+3    | passes (this page pass the condition and might have some data)
+.
+.
+.
+```
+
+Now this is just the case with `id_idx`, this a same `page | condition valid` bitmap will be generated for `grade_idx` also.
+
+Once the pages are finalised using but `ANDing` or `ORing` the bitmap DB still does not know which rows in those pages actually satisfy the both conditions *(a page will have multiple rows)*. Example,
+
+**Condition: id > 12 and grade != 3** 
+```
+Page 5
+Row 1200 -> (id : 12, grade = 3, name : A) ❌
+Row 1201 -> (id : 12, grade = 4, name : B) ✅
+Row 1202 -> (id : 13, grade = 5, name : C) ❌
+Row 1203 -> (id : 12, grade = 6, name : D) ✅
+.
+.
+.
+```
+
+Only row `1201` and `1203` are satisfying both the conditions.
+
+#### Key VS Non-Key Indexes
+**Key index** - values for these indexes are unique, example `id`, `order_id` etc
+**Non-Key Indexes** - values for these might not be unique, example `gender`, `city`, `grades`
+
+Key index store just one tuple *(page, slot)*, while a non-key index stores list of tuples
+
+#### Include Index
+```sql
+create index something_idx on table_name (column1) include (column2);
+```
+Just attach a column with an index. Example, 
+```sql
+(grade, name) -> (pageId, slotId)
+(1, "A") -> (page1, slot3)
+(2, "B") -> (page3, slot4)
+(4, "X") -> (page2, slot8)
+.
+.
+.
+```
+In this case if a query searches for `name` and puts condition on `grade`, then DB can get the `name` directly from the index, so in this case DB will do `Index Only Scan`.
+<img src="IncludeScan.png" width=700 height=180/>
+If the index did not include `name`, then DB will do `Bitmap Scan`
+<img src="BitmapScan2.png" width=700 height=190/>
+#### Composite Index
+Index which is created on multiple columns.
+If the application has lots of `AND` queries on `n` columns then composite index are very fast.
+Example, 
+```sql
+select some_column from student where a = 10 and b = 30;
+```
+
+A composite index on `a` and `b` will be very fast.
+
