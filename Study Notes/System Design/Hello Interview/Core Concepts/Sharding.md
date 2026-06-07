@@ -37,7 +37,7 @@ detect hot spots by monitoring shard metrics like query latency, CPU usage, and 
 **Cross-Shard Operation** - operation which need to query all the shards; example, get top 10 posts, for this application have to go to all the shards to get the data and aggregate the result.
 
 **Other problems -** ***==Joins, Maintaining Transaction, Rollbacks==***
-
+``
 **Solutions** -
 
 - **Cache** - cache the result of cross-shard queries; first query -> expensive, next queries -> fast; if the result is stored in cache and a DB update happens then user might not see the updated result immediately, so this solution is good for eventually consistent systems
