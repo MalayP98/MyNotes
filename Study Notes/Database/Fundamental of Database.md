@@ -547,3 +547,6 @@ select some_column from student where a = 10 and b = 30;
 
 A composite index on `a` and `b` will be very fast.
 
+# Concurrency
+
+
