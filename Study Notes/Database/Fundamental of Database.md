@@ -549,4 +549,261 @@ A composite index on `a` and `b` will be very fast.
 
 # Concurrency
 
+## Locks
 
+### Shared Lock
+This lock is acquired when a transaction is read a resource. ==Multiple transaction can acquire shared lock a single row, when a share lock is acquired (even one) on a row no other transaction can acquire an exclusive lock.==
+
+### Exclusive Lock
+This lock is acquired when a transaction is writing/update a row. ==If exclusive lock is acquired, no other transaction can acquire either shared lock or exclusive lock==
+
+```
+S + S = Allowed
+S + X = Blocked
+X + S = Blocked
+X + X = Blocked
+```
+
+If two transactions try to insert a row with the same primary key, the first transaction acquires a lock or reservation on the corresponding primary key (unique index) entry. This prevents another transaction from claiming the same key value and violating the uniqueness constraint. If the first transaction commits, the second transaction fails with a duplicate key error. If the first transaction rolls back, the second transaction can proceed successfully.
+
+### 2 Phase Lock
+Two-Phase Locking (2PL) is a concurrency control protocol where a transaction first enters a growing phase and acquires locks without releasing any, then enters a shrinking phase and releases locks without acquiring new ones. This guarantees conflict serializability. In practice, databases often use Strict 2PL, where write locks are held until commit or rollback. While Strict 2PL ensures serializable schedules, it can lead to blocking and deadlocks when transactions acquire locks in different orders.
+
+
+
+# Database Cursors
+
+A cursor is a database object that allows you to process the result of a query **one row (or a small batch of rows) at a time** instead of retrieving the entire result set at once.
+
+Think of it as a pointer that moves through the rows returned by a query.
+
+Example:
+
+```sql
+SELECT * FROM employees;
+```
+
+Without a cursor, the entire result set is returned to the client.
+
+With a cursor, the database can return rows gradually:
+
+```
+Row 1
+↓
+Row 2
+↓
+Row 3
+↓
+...
+```
+
+---
+
+Cursors are useful when:
+
+- Processing very large result sets.
+    
+- Performing row-by-row operations.
+    
+- Streaming data to an application.
+    
+- Avoiding excessive memory usage on the client.
+
+---
+
+# Lifecycle of a Cursor
+
+A cursor generally goes through four steps:
+
+## 1. Declare
+
+Define the query associated with the cursor.
+
+```sql
+DECLARE emp_cursor CURSOR FOR
+SELECT * FROM employees;
+```
+
+---
+
+## 2. Open
+
+The cursor becomes active and executes the query.
+
+In PostgreSQL, `DECLARE` both defines and opens the cursor.
+
+---
+
+## 3. Fetch
+
+Retrieve rows from the cursor.
+
+Fetch one row:
+
+```sql
+FETCH NEXT FROM emp_cursor;
+```
+
+Fetch multiple rows:
+
+```sql
+FETCH 10 FROM emp_cursor;
+```
+
+Move backwards (if supported):
+
+```sql
+FETCH PRIOR FROM emp_cursor;
+```
+
+---
+
+## 4. Close
+
+Release the resources.
+
+```sql
+CLOSE emp_cursor;
+```
+
+---
+
+# Complete PostgreSQL Example
+
+```sql
+BEGIN;
+
+DECLARE emp_cursor CURSOR FOR
+SELECT id, name
+FROM employees;
+
+FETCH 2 FROM emp_cursor;
+
+FETCH 2 FROM emp_cursor;
+
+FETCH ALL FROM emp_cursor;
+
+CLOSE emp_cursor;
+
+COMMIT;
+```
+
+---
+
+# Server-side vs Client-side Cursor
+
+## Client-side Cursor
+
+The database sends the **entire result set** to the client immediately.
+
+```
+Database
+      │
+      │ All rows
+      ▼
+Client Memory
+```
+
+Example:
+
+```java
+ResultSet rs = stmt.executeQuery(
+    "SELECT * FROM employees");
+```
+
+The application iterates over rows already stored in memory.
+
+### Advantages
+
+- Faster iteration after data is received.
+    
+- Fewer network round trips.
+    
+- Simple to use.
+    
+
+### Disadvantages
+
+- High memory usage.
+    
+- Slow startup for large queries.
+    
+- Not suitable for millions of rows.
+    
+
+---
+
+## Server-side Cursor
+
+The database keeps the result set and sends rows only when requested.
+
+```
+Database
+   │
+   ├── 100 rows
+   ├── Next 100 rows
+   ├── Next 100 rows
+   ▼
+Client
+```
+
+Example:
+
+```sql
+BEGIN;
+
+DECLARE emp_cursor CURSOR FOR
+SELECT * FROM employees;
+
+FETCH 100 FROM emp_cursor;
+
+FETCH 100 FROM emp_cursor;
+
+CLOSE emp_cursor;
+
+COMMIT;
+```
+
+### Advantages
+
+- Low client memory usage.
+    
+- Efficient for very large result sets.
+    
+- Ideal for batch processing and streaming.
+    
+
+### Disadvantages
+
+- More network round trips.
+    
+- Cursor consumes resources on the database server.
+    
+- Usually tied to the lifetime of the transaction.
+    
+
+---
+# Comparison
+
+|Feature|Client-side Cursor|Server-side Cursor|
+|---|---|---|
+|Result storage|Client memory|Database server|
+|Memory usage|High|Low|
+|Network calls|One large transfer|Multiple smaller transfers|
+|Best for|Small result sets|Large result sets|
+|Initial response|Slower for huge queries|Faster|
+|Database resources|Low|Higher|
+
+
+- A cursor allows processing query results incrementally instead of loading all rows at once.
+    
+- Client-side cursors store the complete result set in application memory.
+    
+- Server-side cursors keep the result set on the database and fetch rows on demand.
+    
+- Server-side cursors are preferred for large datasets and batch processing.
+    
+- In PostgreSQL, server-side cursors typically exist only within a transaction.
+
+
+> A database cursor is a mechanism for traversing a query result set incrementally. Client-side cursors retrieve the entire result set into the application's memory before processing, whereas server-side cursors keep the result set on the database server and return rows in batches as requested. Server-side cursors reduce client memory usage and are well suited for processing large datasets.
