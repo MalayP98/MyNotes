@@ -55,3 +55,35 @@ Only the users `malay` and `admin` can log in via SSH.
 ### Use a Different SSH Port:
 
 Changes the default SSH port from **22** to another port. This helps reduce automated scans and brute-force attacks targeting the default SSH port, although it should not be relied upon as the primary security measure.
+
+```
+                    Computer
+                       │
+                       ▼
+                 UEFI / BIOS
+                 "Start the boot"
+                       │
+                       ▼
+                     GRUB
+                 "Load the kernel"
+                       │
+                       ▼
+                Linux Kernel
+              "Manage hardware"
+                       │
+                       ▼
+                   systemd
+              "Start system services"
+                       │
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+        sshd         cron         network
+       daemon       daemon        services
+                       │
+                       ▼
+                   User Space
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+         Bash         ls           cat
+        (Shell)    (GNU tool)   (GNU tool)
+```
