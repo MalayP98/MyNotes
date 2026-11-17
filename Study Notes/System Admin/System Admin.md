@@ -1,18 +1,113 @@
+# Directories
+
+| Data Type | Description                                         | Examples                                 |
+| --------- | --------------------------------------------------- | ---------------------------------------- |
+| Static    | Data that rarely changes unless explicitly modified | Commands, libraries, configuration files |
+| Dynamic   | Data that changes during system operation           | Logs, runtime data, temporary files      |
+
+## Types of filesystems
+
+|Type|Description|Examples|
+|---|---|---|
+|Disk-based|Stores data persistently on storage devices|ext4, XFS, Btrfs|
+|Network-based|Provides access to files stored on remote systems|NFS, SMB|
+|Memory-based / Virtual|Exposes kernel information or stores temporary runtime data|procfs, sysfs, tmpfs, devtmpfs|
+
+## Important Linux Directories
+
+| Directory | Purpose                                                |
+| --------- | ------------------------------------------------------ |
+| `/`       | Root of the entire Linux directory hierarchy           |
+| `/boot`   | Kernel, initramfs and bootloader files                 |
+| `/etc`    | System-wide configuration files                        |
+| `/root`   | Root user's home directory                             |
+| `/home`   | Regular users' home directories                        |
+| `/mnt`    | Temporary mount point for filesystems                  |
+| `/opt`    | Optional or third-party application software           |
+| `/usr`    | User-space programs, libraries and documentation       |
+| `/var`    | Frequently changing data: logs, caches and spool files |
+| `/tmp`    | Temporary files                                        |
+| `/dev`    | Device nodes for physical and virtual devices          |
+| `/proc`   | Process and kernel information                         |
+| `/run`    | Runtime data for processes and services                |
+| `/sys`    | Hardware, drivers and kernel subsystem information     |
+
+```mermaid
+---
+title: Linux Directory Hierarchy
+---
+flowchart TD
+
+    ROOT["/ (Root)"]
+
+    subgraph SYSTEM["System Directories"]
+        BOOT["/boot"]
+        ETC["/etc"]
+        USR["/usr"]
+        OPT["/opt"]
+        MNT["/mnt"]
+    end
+
+    subgraph USER["User Directories"]
+        HOME["/home"]
+        ROOT_HOME["/root"]
+    end
+
+    subgraph VARIABLE["Variable and Temporary Data"]
+        VAR["/var"]
+        TMP["/tmp"]
+        RUN["/run"]
+    end
+
+    subgraph KERNEL["Kernel and Device Interfaces"]
+        DEV["/dev"]
+        PROC["/proc"]
+        SYS["/sys"]
+    end
+
+    ROOT --> BOOT
+    ROOT --> ETC
+    ROOT --> USR
+    ROOT --> OPT
+    ROOT --> MNT
+
+    ROOT --> HOME
+    ROOT --> ROOT_HOME
+
+    ROOT --> VAR
+    ROOT --> TMP
+    ROOT --> RUN
+
+    ROOT --> DEV
+    ROOT --> PROC
+    ROOT --> SYS
+```
+
+
 # Basic Commands
-| Command                    | Use                                                                                                                                                                | Arguments                                                                                                                                                                                         |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ls`                       | Use to list file                                                                                                                                                   | `-a`: hidden file, `-l`: list format, `lt`: files sort by date and time (newest first, append `r` to reverse it)                                                                                  |
-| `cd`                       | Navigate directories                                                                                                                                               |                                                                                                                                                                                                   |
-| `pwd`                      | Present working directory                                                                                                                                          |                                                                                                                                                                                                   |
-| `tty`                      | Shows the active terminal session user is on, if the user is on 6 <sup>th</sup> terminal this command with o/p `/dev/pts/6`. The o/p changes based on the terminal |                                                                                                                                                                                                   |
-| `uptime`                   | Show current time, time for which the system is up, number of users logged and CPU load past 1, 5 and 15 min. Load ranges from 0-1                                 |                                                                                                                                                                                                   |
-| `which`, `whereis`, `type` | Location of a command                                                                                                                                              |                                                                                                                                                                                                   |
-| `uname`                    | Gets system information                                                                                                                                            | `-a`: other details, `-s`: kernel name, `-n`:<br>node name, `-r`: kernel release, `-v`: kernel build date, ` -m`:<br>hardware name, `-p`: processor type, `-i`: hardware platform, `-o `: OS name |
-| `lscpu`                    | Getting CPU architecture and information                                                                                                                           |                                                                                                                                                                                                   |
-| `info`, `pinfo`            | Both the commands are almost identical. Used to view doc like manual for commands.                                                                                 |                                                                                                                                                                                                   |
-| `file`, `stat`             | Get information about Linux file types, *like regular files, directory, links etc*                                                                                 |                                                                                                                                                                                                   |
-| `tar`                      | Archiving (combining) files and directory together                                                                                                                 | `-c`: Create a new archive, `-x`: Extract an archive, `-t`: list contents of a archive, `-z`: compress using `gzip`, `-p`: preserve permission when extracting                                    |
-| `gzip`/`bzip`              | Compresses files                                                                                                                                                   | `-d`: decompress                                                                                                                                                                                  |
+| Command                    | Use                                                                                                                                                                | Arguments                                                                                                                                                                                                                                                                                             |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ls`                       | Use to list file                                                                                                                                                   | `-a`: hidden file, `-l`: list format, `lt`: files sort by date and time (newest first, append `r` to reverse it)                                                                                                                                                                                      |
+| `cd`                       | Navigate directories                                                                                                                                               |                                                                                                                                                                                                                                                                                                       |
+| `pwd`                      | Present working directory                                                                                                                                          |                                                                                                                                                                                                                                                                                                       |
+| `tty`                      | Shows the active terminal session user is on, if the user is on 6 <sup>th</sup> terminal this command with o/p `/dev/pts/6`. The o/p changes based on the terminal |                                                                                                                                                                                                                                                                                                       |
+| `uptime`                   | Show current time, time for which the system is up, number of users logged and CPU load past 1, 5 and 15 min. Load ranges from 0-1                                 |                                                                                                                                                                                                                                                                                                       |
+| `which`, `whereis`, `type` | Location of a command                                                                                                                                              |                                                                                                                                                                                                                                                                                                       |
+| `uname`                    | Gets system information                                                                                                                                            | `-a`: other details, `-s`: kernel name, `-n`:<br>node name, `-r`: kernel release, `-v`: kernel build date, ` -m`:<br>hardware name, `-p`: processor type, `-i`: hardware platform, `-o `: OS name                                                                                                     |
+| `lscpu`                    | Getting CPU architecture and information                                                                                                                           |                                                                                                                                                                                                                                                                                                       |
+| `info`, `pinfo`            | Both the commands are almost identical. Used to view doc like manual for commands.                                                                                 |                                                                                                                                                                                                                                                                                                       |
+| `file`, `stat`             | Get information about Linux file types, *like regular files, directory, links etc*                                                                                 |                                                                                                                                                                                                                                                                                                       |
+| `tar`                      | Archiving (combining) files and directory together                                                                                                                 | `-c`: Create a new archive, `-x`: Extract an archive, `-t`: list contents of a archive, `-z`: compress using `gzip`, `-p`: preserve permission when extracting                                                                                                                                        |
+| `gzip`/`bzip`              | Compresses files                                                                                                                                                   | `-d`: decompress                                                                                                                                                                                                                                                                                      |
+| `touch`                    | Create a file                                                                                                                                                      | <br>`-d` : Set a specific date and time.<br>`-t` : Set a specific date and time using .<br>`-a` : Change only the access time to the current system time.<br>`-m` : Change only the modification time to the current system time.<br>`-r` : Set timestamps using another reference file's timestamps. |
+| `cat`                      | To view file content                                                                                                                                               |                                                                                                                                                                                                                                                                                                       |
+| `mkdir`                    | Create a new directory                                                                                                                                             | `-v`: verbose, `-p`: can create nested directories *(dir1/dir2/dir3)*                                                                                                                                                                                                                                 |
+| `tac`                      | Displays file content in reverse direction                                                                                                                         |                                                                                                                                                                                                                                                                                                       |
+| `less`/`more`              | Navigate a file page by page                                                                                                                                       | `h`: entering this command when `less` output is active will open a help page which should how to navigate                                                                                                                                                                                            |
+| `wc`                       | Gets lines, words, chars                                                                                                                                           |                                                                                                                                                                                                                                                                                                       |
+| `cp`                       | Copies files                                                                                                                                                       | `-r`: Copies directory, `-p`: Preserve timestamp, permissions                                                                                                                                                                                                                                         |
+| `rm`                       | Remove file                                                                                                                                                        | `-r`: Removed directory                                                                                                                                                                                                                                                                               |
+| `emptydir`                 | Removes all the contents of a directory                                                                                                                            |                                                                                                                                                                                                                                                                                                       |
 
 - Linux creates *pseudo* numbered device files when we open terminals. More number of terminals, more of these device files. These files are stored in `/dev/pts` on Linux *(and in `/dev` directory in Mac)*
   <img src="resources/Img1.png" height=200 width=1000 />
@@ -28,7 +123,7 @@
   2. **Regular** - may contain text and binary data, begins with `-` in `ls` output. Example, `-rwxrwxrwx`
   3. **Character special device** - Communicate with peripheral device. Beings with a `c` in `ls` output. Example, `crw-rw-rw-`
   4. **Block special device** - Communicate with peripheral device. Beings with a `b` in `ls` output. Example, `brw-rw-rw-`
-  5. **Symbolic link** - Beings with a `l`  and an arrow pointing to the actual file in `ls` output. Example, `lrw-rw-rw-`
+  5. **Symbolic link** - *Soft link*, Beings with a `l`  and an arrow pointing to the actual file in `ls` output. Example, `lrw-rw-rw-`
   6. **Named pipe** - Used for interprocess communication
   7. **Socket** - Used for interprocess communication
 
@@ -38,3 +133,43 @@
 - `tar` is used to archive file, so it kinda concat multiple files and directory into a single file called *tarball*. `tar` command presereve directory structure. permissions and links.
 - `gzip`/`bzip` command is used to compress a file. So usually we first archive a file (using `tar`) and then compress it using `gzip` or `bzip`. `bzip` ha a better compression ratio but is slower compared to `gzip`
 - `zip` command combines archiving and compressing
+
+## Linking
+- `indexnode`/`inode`: Files have *metadata*. Metadata stores things like, allocated blocks on disk, file type, size, permission etc. This data take 128 byte of space, this space is called `inode`. `inode` is represented by a numeric value and it point to actual file content. To access this `inode` a filename is mapped to it, this is called a *link*. 
+- **Directory Entry** : A mapping between `inode` and filename. Can be viewed using `-i` option of `ls` command. `getdents64()` is a Linux system call to get directory entry data.
+- **Hard Link** : A link which directly points to the `inode`. Multiple hard links pointing to the same `inode` are identical except for their names. Data can be changed using any hard link.
+- **Soft Link**: This kind of a shortcut. I does not point directly to the files `inode` thus a soft link has a different `indoe` value than the file. The only space which this soft link required is the *size of the path to which it is linked*.
+- Hard link cannot cross filesystems but soft links can.
+
+
+```mermaid
+---
+title: Soft and Hard Links
+---
+flowchart TD
+    subgraph Directory["Directory Entries"]
+        A["hello.txt"]
+        B["hello-hardlink.txt"]
+        C["hello-softlink-1.txt"]
+        H["hello-softlink-2.txt"]
+    end
+
+    subgraph Inodes["Inodes"]
+        D["Inode 12345"]
+        E["Inode 67891"]
+        G["Inode 67892"]
+    end
+
+    F["File Content"]
+
+    A --> D
+    B --> D
+    C --> E
+    H --> G
+
+    E -. "Stores pathname: hello.txt" .-> A
+    G -. "Stores pathname: hello.txt" .-> A
+    D --> F
+```
+
+
